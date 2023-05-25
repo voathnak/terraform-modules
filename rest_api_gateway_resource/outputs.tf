@@ -23,6 +23,11 @@ output "api_resource" {
   value = aws_api_gateway_resource.api_resource
 }
 
+output "uri_path_part" {
+  description = "endpoint-path"
+  value       = var.path_part
+}
+
 output "deployment_sha" {
   value = sha1(jsonencode([
     [for method in aws_api_gateway_method.method : method.id],
