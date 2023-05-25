@@ -8,7 +8,7 @@ resource "aws_lambda_permission" "apigw_lambda_permission" {
   for_each = toset(var.http_methods)
 
 #  statement_id  = "${var.rest_api.name}Allow${each.key}Invoke"
-  statement_id  = "${var.rest_api.name}Allow${local.resource_path_name}${each.key}Invoke"
+  statement_id  = format("%sAllow%s%sInvoke", var.rest_api.name, local.resource_path_name, each.key)
   action        = "lambda:InvokeFunction"
   function_name = var.function.function_name
   principal     = "apigateway.amazonaws.com"
@@ -22,7 +22,7 @@ resource "aws_lambda_permission" "apigw_lambda_permission" {
 resource "aws_lambda_permission" "apigw_resource_specific_lambda_permission" {
   count = var.resource_specific ? length(var.resource_specific_http_methods) : 0
 
-  statement_id  = "${var.rest_api.name}Allow-Specific-Id-${var.resource_specific_http_methods[count.index]}Invoke"
+  statement_id  = format("%sAllow-Specific-Id-%sInvoke", var.rest_api.name, var.resource_specific_http_methods[count.index])
   action        = "lambda:InvokeFunction"
   function_name = var.function.function_name
   principal     = "apigateway.amazonaws.com"
