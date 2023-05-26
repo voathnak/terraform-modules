@@ -9,6 +9,11 @@ variable "project_name" {
   description = "Project name"
 
   type = string
+
+  validation {
+    condition     = length(var.project_name) > 0 && length(var.project_name) <= 24
+    error_message = "The project_name value must at least 1 char string or less than or equal to 24 chars."
+  }
 }
 
 variable "name" {
